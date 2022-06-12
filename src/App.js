@@ -1,20 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import searchIcon from "./search.svg";
+import SearchIcon from "./search.svg";
 import MovieCard from "./components/MovieCard";
 
 const API_URL = "http://www.omdbapi.com?apikey=3809d6a";
 
-const movie1 = {
-  Title: "The Batman",
-  Year: "2022",
-  imdbID: "tt1877830",
-  Type: "movie",
-  Poster:
-    "https://m.media-amazon.com/images/M/MV5BMDdmMTBiNTYtMDIzNi00NGVlLWIzMDYtZTk3MTQ3NGQxZGEwXkEyXkFqcGdeQXVyMzMwOTU5MDk@._V1_SX300.jpg",
-};
-
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
   const [movies, setMovies] = useState([]);
 
   const searchMovies = async (title) => {
@@ -25,27 +17,33 @@ function App() {
   };
 
   useEffect(() => {
-    searchMovies("batman");
+    searchMovies("Batman");
   }, []);
+
   return (
     <div className="App">
       <h1>Stream Go</h1>
 
       <div className="search">
         <input
-          type="text"
           placeholder="Search for movies"
-          value="Superman"
-          onChange={() => {}}
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
         />
-        <img src={searchIcon} alt="search" onClick={() => {}} />
+        <img
+          src={SearchIcon}
+          alt="search"
+          onClick={() => searchMovies(searchTerm)}
+        />
       </div>
 
       {movies.length > 0 ? (
         <div className="container">
-          {movies.map((movie) => {
-            <MovieCard movie={movie} />;
-          })}
+          {movies.map((movie) => (
+            <MovieCard movie={movie} />
+          ))}
         </div>
       ) : (
         <div className="empty">
